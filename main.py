@@ -24,7 +24,7 @@ import VIIRS_raw_process
 import ABI_raw_process # for 0:50
 import ABI_raw_process_back
 import ABI_raw_process_small#for 50:+
-#import ABI_only
+import ABI_only
 #import GOES_pack_case
 #import workingABIcolocate
 #import GOES2NPZ
@@ -165,10 +165,10 @@ ABI_raw_process_p.add_argument('viirs_dir')
 ABI_raw_process_p.add_argument('abi_dir')
 ABI_raw_process_p.add_argument('-q', '--quiet', action='count', default=0)
 
-#ABI_only_p = subparsers.add_parser('ABI-only-raw-small', help=' makes the numpy array with the Cband for  set of 20 DTGs ')
-#ABI_only_p.set_defaults(func=ABI_only.main)
-#ABI_only_p.add_argument('abi_dir')
-#ABI_only_p.add_argument('-q', '--quiet', action='count', default=0)
+ABI_only_p = subparsers.add_parser('ABI-only-raw-small', help=' makes the numpy array with the Cband for  set of 20 DTGs ')
+ABI_only_p.set_defaults(func=ABI_only.main)
+ABI_only_p.add_argument('abi_dir')
+ABI_only_p.add_argument('-q', '--quiet', action='count', default=0)
 
 #dealer_p = subparsers.add_parser('dealer', help=' makes the numpy array with the Cbands')
 #dealer_p.set_defaults(func=dealer.pack_case)
