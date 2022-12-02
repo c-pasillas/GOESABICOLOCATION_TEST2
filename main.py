@@ -21,11 +21,14 @@ import Rdatetime
 #####these . py take the hdf and nc files and make the colocated cases
 # these .py SHOULD be the two main processing inputs of NOAA data after the SM_Reflectance has been calculated, see next if no reflectance needed. 
 import VIIRS_raw_process
-import ABI_raw_process # can only run if have GOES
-import GOES_pack_case
+import ABI_raw_process # for 0:50
+import ABI_raw_process_back
+import ABI_raw_process_small#for 50:+
+#import ABI_only
+#import GOES_pack_case
 #import workingABIcolocate
-import GOES2NPZ
-import dealer
+#import GOES2NPZ
+#import dealer
 
 # pack_case can be run if no DNB Reflecance data needed, means cases will be imagery use only no stats cuz no truth is possible
 #import ABI_pack_case
@@ -150,10 +153,27 @@ ABI_raw_process_p.add_argument('viirs_dir')
 ABI_raw_process_p.add_argument('abi_dir')
 ABI_raw_process_p.add_argument('-q', '--quiet', action='count', default=0)
 
-dealer_p = subparsers.add_parser('dealer', help=' makes the numpy array with the Cbands')
-dealer_p.set_defaults(func=dealer.pack_case)
-dealer_p.add_argument('abi_dir', help='Path to directory with the GOES abi files')
-dealer_p.add_argument('-q', '--quiet', action='count', default=0)
+ABI_raw_process_p = subparsers.add_parser('ABI-raw-process-back', help=' makes the numpy array with the DNB, Cband, Mband and SM_Reflectance for DTG 50+')
+ABI_raw_process_p.set_defaults(func=ABI_raw_process_back.main)
+ABI_raw_process_p.add_argument('viirs_dir')
+ABI_raw_process_p.add_argument('abi_dir')
+ABI_raw_process_p.add_argument('-q', '--quiet', action='count', default=0)
+
+ABI_raw_process_p = subparsers.add_parser('ABI-raw-process-small', help=' makes the numpy array with the DNB, Cband, Mband and SM_Reflectance for  set of 20 DTGs ')
+ABI_raw_process_p.set_defaults(func=ABI_raw_process_small.main)
+ABI_raw_process_p.add_argument('viirs_dir')
+ABI_raw_process_p.add_argument('abi_dir')
+ABI_raw_process_p.add_argument('-q', '--quiet', action='count', default=0)
+
+#ABI_only_p = subparsers.add_parser('ABI-only-raw-small', help=' makes the numpy array with the Cband for  set of 20 DTGs ')
+#ABI_only_p.set_defaults(func=ABI_only.main)
+#ABI_only_p.add_argument('abi_dir')
+#ABI_only_p.add_argument('-q', '--quiet', action='count', default=0)
+
+#dealer_p = subparsers.add_parser('dealer', help=' makes the numpy array with the Cbands')
+#dealer_p.set_defaults(func=dealer.pack_case)
+#dealer_p.add_argument('abi_dir', help='Path to directory with the GOES abi files')
+#dealer_p.add_argument('-q', '--quiet', action='count', default=0)
 
 
 #VIIRS_pack_case_p = subparsers.add_parser('VIIRS-packcase', help=msg[0], description=msg[1])
@@ -169,15 +189,15 @@ dealer_p.add_argument('-q', '--quiet', action='count', default=0)
 #ABI_pack_case_p.add_argument('--save-images', action='store_true', help='Should save image files')
 #ABI_pack_case_p.add_argument('-q', '--quiet', action='count', default=0)
 
-GOES_pack_case_p = subparsers.add_parser('GOES-pack-case', help = "make the GOES case colocated w VIIRS DNB")
-GOES_pack_case_p.set_defaults(func=GOES_pack_case.main)
-GOES_pack_case_p.add_argument('h5_dir')
-GOES_pack_case_p.add_argument('nc_dir')
-GOES_pack_case_p.add_argument('--save-images', action='store_true', help='Should save image files')
-GOES_pack_case_p.add_argument('-q', '--quiet', action='count', default=0)  
+#GOES_pack_case_p = subparsers.add_parser('GOES-pack-case', help = "make the GOES case colocated w VIIRS DNB")
+#GOES_pack_case_p.set_defaults(func=GOES_pack_case.main)
+#GOES_pack_case_p.add_argument('h5_dir')
+#GOES_pack_case_p.add_argument('nc_dir')
+#GOES_pack_case_p.add_argument('--save-images', action='store_true', help='Should save image files')
+#GOES_pack_case_p.add_argument('-q', '--quiet', action='count', default=0)  
   
-GOES2NPZ_p = subparsers.add_parser('GOES2NPZ', help = "make the GOES2NPZ only case")
-GOES2NPZ_p.set_defaults(func=GOES2NPZ.main)
+#GOES2NPZ_p = subparsers.add_parser('GOES2NPZ', help = "make the GOES2NPZ only case")
+#GOES2NPZ_p.set_defaults(func=GOES2NPZ.main)
 #GOES2NPZ_p.add_argument('abi_dir')
 #GOES2NPZ_p.add_argument('-q', '--quiet', action='count', default=0)    
     
@@ -200,7 +220,7 @@ Train_master_p.set_defaults(func=Train_master.main)
 Train_master_p.add_argument('-q', '--quiet', action='count', default=0)
 Train_master_p.add_argument('npz_path', help='Path to npz file')
 
-predict_master_p = subparsers.add_parser('PREDICT-master', help='PREDICT PREP (most operational input data set) --modify fxns in order Derive band norms and BTDs removes original data does not NADIR or remove NANs(rows or individual) ')
+predict_master_p = subparsers.add_parser('PREDICT-master', help='PREDICT PREP (most operational input data set) --modify fxns in order Derive band norms and BTDs removes original data does not NADIR or remove NANs(rows or individual) works for both Cbands and Mbands ')
 predict_master_p.set_defaults(func=predict_master.main)
 predict_master_p.add_argument('-q', '--quiet', action='count', default=0)
 predict_master_p.add_argument('npz_path', help='Path to npz file')
