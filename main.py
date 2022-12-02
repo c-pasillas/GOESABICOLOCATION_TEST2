@@ -21,8 +21,8 @@ from common import log, bold, reset, color, rgb, blue
 #####these . py take the hdf and nc files and make the colocated cases
 # these .py SHOULD be the two main processing inputs of NOAA data after the SM_Reflectance has been calculated, see next if no reflectance needed. 
 #import VIIRS_raw_process
-#import ABI_raw_process # for 0:50
-#import ABI_raw_process_back
+import ABI_raw_process # for 0:50
+import ABI_raw_process_back
 import ABI_raw_process_small#for 50:+
 import ABI_only
 #import GOES_pack_case
@@ -147,17 +147,17 @@ msg = (f'Pack a case into a single array',
 #VIIRS_raw_process_p.add_argument('h5_dir', help='Path to directory with the .h5 files')
 #VIIRS_raw_process_p.add_argument('-q', '--quiet', action='count', default=0)
 
-#ABI_raw_process_p = subparsers.add_parser('ABI-raw-process', help=' makes the numpy array with the DNB, Cband, Mband and SM_Reflectance')
-#ABI_raw_process_p.set_defaults(func=ABI_raw_process.main)
-#ABI_raw_process_p.add_argument('viirs_dir')
-#ABI_raw_process_p.add_argument('abi_dir')
-#ABI_raw_process_p.add_argument('-q', '--quiet', action='count', default=0)
+ABI_raw_process_p = subparsers.add_parser('ABI-raw-process', help=' makes the numpy array with the DNB, Cband, Mband and SM_Reflectance')
+ABI_raw_process_p.set_defaults(func=ABI_raw_process.main)
+ABI_raw_process_p.add_argument('viirs_dir')
+ABI_raw_process_p.add_argument('abi_dir')
+ABI_raw_process_p.add_argument('-q', '--quiet', action='count', default=0)
 
-#ABI_raw_process_p = subparsers.add_parser('ABI-raw-process-back', help=' makes the numpy array with the DNB, Cband, Mband and SM_Reflectance for DTG 50+')
-#ABI_raw_process_p.set_defaults(func=ABI_raw_process_back.main)
-#ABI_raw_process_p.add_argument('viirs_dir')
-#ABI_raw_process_p.add_argument('abi_dir')
-#ABI_raw_process_p.add_argument('-q', '--quiet', action='count', default=0)
+ABI_raw_process_p = subparsers.add_parser('ABI-raw-process-back', help=' makes the numpy array with the DNB, Cband, Mband and SM_Reflectance for DTG 50+')
+ABI_raw_process_p.set_defaults(func=ABI_raw_process_back.main)
+ABI_raw_process_p.add_argument('viirs_dir')
+ABI_raw_process_p.add_argument('abi_dir')
+ABI_raw_process_p.add_argument('-q', '--quiet', action='count', default=0)
 
 ABI_raw_process_p = subparsers.add_parser('ABI-raw-process-small', help=' makes the numpy array with the DNB, Cband, Mband and SM_Reflectance for  set of 20 DTGs ')
 ABI_raw_process_p.set_defaults(func=ABI_raw_process_small.main)
