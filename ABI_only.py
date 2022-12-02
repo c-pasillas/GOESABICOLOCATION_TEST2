@@ -113,20 +113,21 @@ def main(args):
     print(">>>>>>>>>>>>>>>>>>>>>>>>>abi_dict is>>>>>>>>>>>>>>", ABI_dict)
     
     #ABI_dict = group_abi_by_time_sat(abi_dir)
+    
+    # THIS IS WHAT ALSO WAS DONE WHEN THERE WAS VIIRS THAT I FIGURED THESE STEPS WE DONT NEED SINCE ITS ABI ONLY BUT MAYBE IT MEANS ONE LESS DICT LAYER WHEN TRYING TO CALL IT
     #print(">>>>>>>>>>>>>>>>>>>>>>>>>abi_dict is>>>>>>>>>>>>>>", ABI_dict)
     #ABI_DNB_pairing = pair_viirs_with_abi(DNBs, ABI_dict)
     #print("@@@@@@@@@@@@@@@@@@@@@@@@@@abidnbpair is", ABI_DNB_pairing) 
     
     # make single file DTG list/dic of the DTGname and the associated DNB, Mband,Ref, and Cband so satpy/colocate etc gets called using this list of DTGs
     #matched = match_stuff(VIIRS_pairing, ABI_DNB_pairing)
-    
+    #MATCHED = sorted(matched)
     
     
     # make single file DTG list/dic of the DTGname and the Cband so satpy/colocate etc gets called using this list of DTGs
     matched = ABI_dict
     MATCHED = sorted(matched)
-    #matched = match_stuff(VIIRS_pairing, ABI_DNB_pairing)
-    #MATCHED = sorted(matched)
+   
     print("*************************this is MATCHED***************/n", MATCHED)
     keylist = []
     for key in MATCHED:
@@ -134,6 +135,7 @@ def main(args):
     print("the keylist is", keylist) 
     #DATA SET 1
     
+    #THIS WAS ME TRYING TO FIGURE OUT HWO TO ACCESS THE DICT CORRECTLY
     #people = {1: {'Name': 'John', 'Age': '27', 'Sex': 'Male'},
           #2: {'Name': 'Marie', 'Age': '22', 'Sex': 'Female'}}
 
@@ -143,10 +145,10 @@ def main(args):
       #  for key in p_info:
        #     print(key + ':', p_info[key])
     
-    for DTG, group in ABI_dict.items():
-        print('\nthe DTG is:', DTG)
-            for paths in group:
-                print(gpaths + ':', group[paths])
+    #for DTG, group in ABI_dict.items():
+     #   print('\nthe DTG is:', DTG)
+      #      for paths in group:
+       #         print(gpaths + ':', group[paths])
     
     
     datas = []
