@@ -13,16 +13,16 @@ import common
 from common import log, bold, reset, color, rgb, blue
 
 #this file runs and gets quick info on your numpy array file
-import info
+#import info
 
 #this is needed to get the date time to then go run the IDL SM_Reflectance process
-import Rdatetime
+#import Rdatetime
 
 #####these . py take the hdf and nc files and make the colocated cases
 # these .py SHOULD be the two main processing inputs of NOAA data after the SM_Reflectance has been calculated, see next if no reflectance needed. 
-import VIIRS_raw_process
-import ABI_raw_process # for 0:50
-import ABI_raw_process_back
+#import VIIRS_raw_process
+#import ABI_raw_process # for 0:50
+#import ABI_raw_process_back
 import ABI_raw_process_small#for 50:+
 import ABI_only
 #import GOES_pack_case
@@ -35,27 +35,27 @@ import ABI_only
 #import VIIRS_pack_case 
 
 ########these are acted upon colocated cases to reduce sizes, remove bad data, focus on AIO, focus on bands of concern etc
-import combine_case # combine for more cases or by season, yr, etc
-import Train_master # runs in this order NADIR, nan rows, band norm, btds
-import predict_master # runs the btd and bandnorm but keeps and NAN stuff and doesnt make small to NADIR, best to rep true data set application
+#import combine_case # combine for more cases or by season, yr, etc
+#import Train_master # runs in this order NADIR, nan rows, band norm, btds
+#import predict_master # runs the btd and bandnorm but keeps and NAN stuff and doesnt make small to NADIR, best to rep true data set application
 
-import NADIR_crop # crops the processed array to NADIR + 600
-import aoi # can filter by if the whole patch is in the AOI y/n or only take the pixels and make new array
-#import crop
-import patch #patches input to desired sizes
-import NANrows  #removes and sample that has any rows of NANs  ( used on whole or patches)
-import NANfill # fills all NANs with 9999
-import btd #makes the desired BTDs from the present bands
-import band_norm # normalizes the M and C bands present
+#import NADIR_crop # crops the processed array to NADIR + 600
+#import aoi # can filter by if the whole patch is in the AOI y/n or only take the pixels and make new array
+import crop
+#import patch #patches input to desired sizes
+#import NANrows  #removes and sample that has any rows of NANs  ( used on whole or patches)
+#import NANfill # fills all NANs with 9999
+#import btd #makes the desired BTDs from the present bands
+#import band_norm # normalizes the M and C bands present
 
 
 #these are the actual training and prediction programs
 #import MLR_train
-import FNN_prep
-import FNN_train
-import FNN_retrain
-import FNN_predict
-import FNN_assess
+#import FNN_prep
+#import FNN_train
+#import FNN_retrain
+#import FNN_predict
+#import FNN_assess
 #import FNN_PnA
 #import removecloud
 #import map_rawbands
@@ -127,37 +127,37 @@ msg = (f'Pack a case into a single array',
 
 
 ######high level
-info_p = subparsers.add_parser('info', help=' gives npz file summary info') 
-info_p.set_defaults(func=info.main)
-info_p.add_argument('npz_path', help='Path to npz file')
-info_p.add_argument('-q', '--quiet', action='count', default=0)
+#info_p = subparsers.add_parser('info', help=' gives npz file summary info') 
+#info_p.set_defaults(func=info.main)
+#info_p.add_argument('npz_path', help='Path to npz file')
+#info_p.add_argument('-q', '--quiet', action='count', default=0)
 
 ### DTG stuff
 
-Rdatetime_p = subparsers.add_parser('RDT', help=' makes .txt file of the DTGs for use in the Reflectance work')
-Rdatetime_p.set_defaults(func=Rdatetime.main)
-Rdatetime_p.add_argument('h5_dir', help='Path to directory with the .h5 files')
-Rdatetime_p.add_argument('-q', '--quiet', action='count', default=0)
+#Rdatetime_p = subparsers.add_parser('RDT', help=' makes .txt file of the DTGs for use in the Reflectance work')
+#Rdatetime_p.set_defaults(func=Rdatetime.main)
+#Rdatetime_p.add_argument('h5_dir', help='Path to directory with the .h5 files')
+#Rdatetime_p.add_argument('-q', '--quiet', action='count', default=0)
 
 
 ##### PACKCASES######
 
-VIIRS_raw_process_p = subparsers.add_parser('VIIRS-raw-process', help=' makes the numpy array with the DNB, Mband and SM_Reflectance')
-VIIRS_raw_process_p.set_defaults(func=VIIRS_raw_process.pack_case)
-VIIRS_raw_process_p.add_argument('h5_dir', help='Path to directory with the .h5 files')
-VIIRS_raw_process_p.add_argument('-q', '--quiet', action='count', default=0)
+#VIIRS_raw_process_p = subparsers.add_parser('VIIRS-raw-process', help=' makes the numpy array with the DNB, Mband and SM_Reflectance')
+#VIIRS_raw_process_p.set_defaults(func=VIIRS_raw_process.pack_case)
+#VIIRS_raw_process_p.add_argument('h5_dir', help='Path to directory with the .h5 files')
+#VIIRS_raw_process_p.add_argument('-q', '--quiet', action='count', default=0)
 
-ABI_raw_process_p = subparsers.add_parser('ABI-raw-process', help=' makes the numpy array with the DNB, Cband, Mband and SM_Reflectance')
-ABI_raw_process_p.set_defaults(func=ABI_raw_process.main)
-ABI_raw_process_p.add_argument('viirs_dir')
-ABI_raw_process_p.add_argument('abi_dir')
-ABI_raw_process_p.add_argument('-q', '--quiet', action='count', default=0)
+#ABI_raw_process_p = subparsers.add_parser('ABI-raw-process', help=' makes the numpy array with the DNB, Cband, Mband and SM_Reflectance')
+#ABI_raw_process_p.set_defaults(func=ABI_raw_process.main)
+#ABI_raw_process_p.add_argument('viirs_dir')
+#ABI_raw_process_p.add_argument('abi_dir')
+#ABI_raw_process_p.add_argument('-q', '--quiet', action='count', default=0)
 
-ABI_raw_process_p = subparsers.add_parser('ABI-raw-process-back', help=' makes the numpy array with the DNB, Cband, Mband and SM_Reflectance for DTG 50+')
-ABI_raw_process_p.set_defaults(func=ABI_raw_process_back.main)
-ABI_raw_process_p.add_argument('viirs_dir')
-ABI_raw_process_p.add_argument('abi_dir')
-ABI_raw_process_p.add_argument('-q', '--quiet', action='count', default=0)
+#ABI_raw_process_p = subparsers.add_parser('ABI-raw-process-back', help=' makes the numpy array with the DNB, Cband, Mband and SM_Reflectance for DTG 50+')
+#ABI_raw_process_p.set_defaults(func=ABI_raw_process_back.main)
+#ABI_raw_process_p.add_argument('viirs_dir')
+#ABI_raw_process_p.add_argument('abi_dir')
+#ABI_raw_process_p.add_argument('-q', '--quiet', action='count', default=0)
 
 ABI_raw_process_p = subparsers.add_parser('ABI-raw-process-small', help=' makes the numpy array with the DNB, Cband, Mband and SM_Reflectance for  set of 20 DTGs ')
 ABI_raw_process_p.set_defaults(func=ABI_raw_process_small.main)
@@ -207,65 +207,65 @@ ABI_only_p.add_argument('-q', '--quiet', action='count', default=0)
 #workingABIcolocate_p.add_argument('--save-images', action='store_true', help='Should save image files')
 #workingABIcolocate_p.add_argument('-q', '--quiet', action='count', default=0)   
     
-comb_p = subparsers.add_parser('combine-cases', help='combine multiple cases identified in cmd line')
-comb_p.set_defaults(func=combine_case.main)
-comb_p.add_argument('-q', '--quiet', action='count', default=0)
-comb_p.add_argument('--outputname', default = 'COMBINED.npz', help ='the name of new combined file')
-comb_p.add_argument('npz_path', nargs='+', help='npz files to combine')
+#comb_p = subparsers.add_parser('combine-cases', help='combine multiple cases identified in cmd line')
+#comb_p.set_defaults(func=combine_case.main)
+#comb_p.add_argument('-q', '--quiet', action='count', default=0)
+#comb_p.add_argument('--outputname', default = 'COMBINED.npz', help ='the name of new combined file')
+#comb_p.add_argument('npz_path', nargs='+', help='npz files to combine')
 
 ####MODIFY DATA
 
-Train_master_p = subparsers.add_parser('TRNG-master', help='TRNG PREP (most ideal data set) --modify fxns in order NADIR, nanrows (keeps DTG without NANrows), Derive band norms and BTDs removes original data ')
-Train_master_p.set_defaults(func=Train_master.main)
-Train_master_p.add_argument('-q', '--quiet', action='count', default=0)
-Train_master_p.add_argument('npz_path', help='Path to npz file')
+#Train_master_p = subparsers.add_parser('TRNG-master', help='TRNG PREP (most ideal data set) --modify fxns in order NADIR, nanrows (keeps DTG without NANrows), Derive band norms and BTDs removes original data ')
+#Train_master_p.set_defaults(func=Train_master.main)
+#Train_master_p.add_argument('-q', '--quiet', action='count', default=0)
+#Train_master_p.add_argument('npz_path', help='Path to npz file')
 
-predict_master_p = subparsers.add_parser('PREDICT-master', help='PREDICT PREP (most operational input data set) --modify fxns in order Derive band norms and BTDs removes original data does not NADIR or remove NANs(rows or individual) works for both Cbands and Mbands ')
-predict_master_p.set_defaults(func=predict_master.main)
-predict_master_p.add_argument('-q', '--quiet', action='count', default=0)
-predict_master_p.add_argument('npz_path', help='Path to npz file')
+#predict_master_p = subparsers.add_parser('PREDICT-master', help='PREDICT PREP (most operational input data set) --modify fxns in order Derive band norms and BTDs removes original data does not NADIR or remove NANs(rows or individual) works for both Cbands and Mbands ')
+#predict_master_p.set_defaults(func=predict_master.main)
+#predict_master_p.add_argument('-q', '--quiet', action='count', default=0)
+#predict_master_p.add_argument('npz_path', help='Path to npz file')
 
-NADIR_crop_p = subparsers.add_parser('NADIR', help=' reduces array to NADIR + 600') 
-NADIR_crop_p.set_defaults(func=NADIR_crop.main)
-NADIR_crop_p.add_argument('npz_path', help='Path to npz file')
-NADIR_crop_p.add_argument('-q', '--quiet', action='count', default=0)
+#NADIR_crop_p = subparsers.add_parser('NADIR', help=' reduces array to NADIR + 600') 
+#NADIR_crop_p.set_defaults(func=NADIR_crop.main)
+#NADIR_crop_p.add_argument('npz_path', help='Path to npz file')
+#NADIR_crop_p.add_argument('-q', '--quiet', action='count', default=0)
 
-patch_p = subparsers.add_parser('patch', help='Cut into smaller patches')
-patch_p.set_defaults(func=patch.patch)
-patch_p.add_argument('npz_path', help='Path to npz file')
-patch_p.add_argument('--PATCHSIZE', default= 256, type=int, help='desired patchsize')
-patch_p.add_argument('-q', '--quiet', action='count', default=0)
+#patch_p = subparsers.add_parser('patch', help='Cut into smaller patches')
+#patch_p.set_defaults(func=patch.patch)
+#patch_p.add_argument('npz_path', help='Path to npz file')
+#patch_p.add_argument('--PATCHSIZE', default= 256, type=int, help='desired patchsize')
+#patch_p.add_argument('-q', '--quiet', action='count', default=0)
 
-aoi_p = subparsers.add_parser('aoi', help='Filter based of Area of Interest keep patch in AOI or only keep points in AOI')
-aoi_p.set_defaults(func=aoi.aoi)
+#aoi_p = subparsers.add_parser('aoi', help='Filter based of Area of Interest keep patch in AOI or only keep points in AOI')
+#aoi_p.set_defaults(func=aoi.aoi)
 #aoi_p.add_argument('--pixel', action = 'store_true' )
-aoi_p.add_argument('npz_path', help='Path to npz file')
-aoi_p.add_argument('NSEW', type=int, nargs=4, help='NSEW bounding box')
-aoi_p.add_argument('--pixel', action = 'store_true' )
-aoi_p.add_argument('-q', '--quiet', action='count', default=0)
+#aoi_p.add_argument('npz_path', help='Path to npz file')
+#aoi_p.add_argument('NSEW', type=int, nargs=4, help='NSEW bounding box')
+#aoi_p.add_argument('--pixel', action = 'store_true' )
+#aoi_p.add_argument('-q', '--quiet', action='count', default=0)
 
-NANrows_p = subparsers.add_parser('NANrows', help='Remove all samples with NAN rows--')
-NANrows_p.set_defaults(func=NANrows.NAN)
-NANrows_p.add_argument('npz_path', help='Path to npz file')
-NANrows_p.add_argument('--keep', action = 'store_true', help='removed rows of NANs and filled random NANS w 0 on case unless flagged otherwise')
-NANrows_p.add_argument('--both', action = 'store_true', help='if not called does individuallys, if called will run and save both the norow and yesrows')
-NANrows_p.add_argument('-q', '--quiet', action='count', default=0)
+#NANrows_p = subparsers.add_parser('NANrows', help='Remove all samples with NAN rows--')
+#NANrows_p.set_defaults(func=NANrows.NAN)
+#NANrows_p.add_argument('npz_path', help='Path to npz file')
+#NANrows_p.add_argument('--keep', action = 'store_true', help='removed rows of NANs and filled random NANS w 0 on case unless flagged otherwise')
+#NANrows_p.add_argument('--both', action = 'store_true', help='if not called does individuallys, if called will run and save both the norow and yesrows')
+#NANrows_p.add_argument('-q', '--quiet', action='count', default=0)
 
-NANfill_p = subparsers.add_parser('NANfill', help='Replace all NANs w 9999')
-NANfill_p.set_defaults(func=NANfill.NANfill)
-NANfill_p.add_argument('npz_path', help='Path to npz file')
-NANfill_p.add_argument('-q', '--quiet', action='count', default=0)
+#NANfill_p = subparsers.add_parser('NANfill', help='Replace all NANs w 9999')
+#NANfill_p.set_defaults(func=NANfill.NANfill)
+#NANfill_p.add_argument('npz_path', help='Path to npz file')
+#NANfill_p.add_argument('-q', '--quiet', action='count', default=0)
 
-btd_p = subparsers.add_parser('btd', help='makes the desired BTD channels and norms, defaults to all unless specified must take from raw band values')
-btd_p.set_defaults(func=btd.btd)
-btd_p.add_argument('npz_path', help='Path to npz file')
+#btd_p = subparsers.add_parser('btd', help='makes the desired BTD channels and norms, defaults to all unless specified must take from raw band values')
+#btd_p.set_defaults(func=btd.btd)
+#btd_p.add_argument('npz_path', help='Path to npz file')
 #VIIRS_btd_p.add_argument('--BTDs', default= None, help='what BTDs we want')
-btd_p.add_argument('-q', '--quiet', action='count', default=0)
+#btd_p.add_argument('-q', '--quiet', action='count', default=0)
 
-band_norm_p = subparsers.add_parser('band-norm', help='Normalizes  any M and C bands if present') 
-band_norm_p.set_defaults(func=band_norm.main)
-band_norm_p.add_argument('npz_path', help='Path to npz file')
-band_norm_p.add_argument('-q', '--quiet', action='count', default=0)
+#band_norm_p = subparsers.add_parser('band-norm', help='Normalizes  any M and C bands if present') 
+#band_norm_p.set_defaults(func=band_norm.main)
+#band_norm_p.add_argument('npz_path', help='Path to npz file')
+#band_norm_p.add_argument('-q', '--quiet', action='count', default=0)
 
 
 #NAN_p = subparsers.add_parser('NAN', help='Remove all patches with ANY NANs-- only use after patched')
@@ -319,29 +319,29 @@ band_norm_p.add_argument('-q', '--quiet', action='count', default=0)
 
 ######### FNN steps
 
-FNN_prep_p = subparsers.add_parser('FNN-prep', help='Makes TORS/TANDS for dataset use (inclsues TAND_test/train TORS_test/train')
-FNN_prep_p.set_defaults(func=FNN_prep.FNN_prep)
-FNN_prep_p.add_argument('npz_path', help='Path to npz file')
-FNN_prep_p.add_argument('--Predictors', nargs="+", help='the predictors we are using')
-FNN_prep_p.add_argument('-q', '--quiet', action='count', default=0)
+#FNN_prep_p = subparsers.add_parser('FNN-prep', help='Makes TORS/TANDS for dataset use (inclsues TAND_test/train TORS_test/train')
+#FNN_prep_p.set_defaults(func=FNN_prep.FNN_prep)
+#FNN_prep_p.add_argument('npz_path', help='Path to npz file')
+#FNN_prep_p.add_argument('--Predictors', nargs="+", help='the predictors we are using')
+#FNN_prep_p.add_argument('-q', '--quiet', action='count', default=0)
 
-FNN_train_p = subparsers.add_parser('FNN-train', help='Train a FNN given a set of data')
-FNN_train_p.set_defaults(func=FNN_train.FNN_train)
-FNN_train_p.add_argument('npz_path', help='Path to npz file')
-FNN_train_p.add_argument('--Predictors', nargs="+", help='the predictors we are using')
-FNN_train_p.add_argument('-q', '--quiet', action='count', default=0)
+#FNN_train_p = subparsers.add_parser('FNN-train', help='Train a FNN given a set of data')
+#FNN_train_p.set_defaults(func=FNN_train.FNN_train)
+#FNN_train_p.add_argument('npz_path', help='Path to npz file')
+#FNN_train_p.add_argument('--Predictors', nargs="+", help='the predictors we are using')
+#FNN_train_p.add_argument('-q', '--quiet', action='count', default=0)
 
-FNN_retrain_p = subparsers.add_parser('FNN-retrain', help='REtrain a FNN given a predictos/predictand array meant for use after inital train on data')
-FNN_retrain_p.set_defaults(func=FNN_retrain.FNN_retrain)
-FNN_retrain_p.add_argument('npz_path', help='Path to npz file of TORS/TAND')
-FNN_retrain_p.add_argument('-q', '--quiet', action='count', default=0)
+#FNN_retrain_p = subparsers.add_parser('FNN-retrain', help='REtrain a FNN given a predictos/predictand array meant for use after inital train on data')
+#FNN_retrain_p.set_defaults(func=FNN_retrain.FNN_retrain)
+#FNN_retrain_p.add_argument('npz_path', help='Path to npz file of TORS/TAND')
+#FNN_retrain_p.add_argument('-q', '--quiet', action='count', default=0)
 
-FNN_predict_p = subparsers.add_parser('FNN-predict', help='Predict ML values with FNN') #may become predict only) 
-FNN_predict_p.set_defaults(func=FNN_predict.predict)
-FNN_predict_p.add_argument('npz_path', help='Path to npz file with channels')
-FNN_predict_p.add_argument('model_path', help='Path to Model folder')
-FNN_predict_p.add_argument('channel_path', help='Path to Model Channels')
-FNN_predict_p.add_argument('-q', '--quiet', action='count', default=0)        
+#FNN_predict_p = subparsers.add_parser('FNN-predict', help='Predict ML values with FNN') #may become predict only) 
+#FNN_predict_p.set_defaults(func=FNN_predict.predict)
+#FNN_predict_p.add_argument('npz_path', help='Path to npz file with channels')
+#FNN_predict_p.add_argument('model_path', help='Path to Model folder')
+#FNN_predict_p.add_argument('channel_path', help='Path to Model Channels')
+#FNN_predict_p.add_argument('-q', '--quiet', action='count', default=0)        
 
 #FNN_GOES_predict_p = subparsers.add_parser('FNN-predict', help='Predict ML values with FNN') #may become predict only) 
 #FNN_GOES_predict_p.set_defaults(func=FNN_predict.predict)
@@ -352,12 +352,12 @@ FNN_predict_p.add_argument('-q', '--quiet', action='count', default=0)
 
 
 
-FNN_assess_p = subparsers.add_parser('FNN-assess', help='compare ML vs DNB values') # may become train only) 
-FNN_assess_p.set_defaults(func=FNN_assess.assessment)
-FNN_assess_p.add_argument('npz_path', help='Path to npz file with normed values') #DNB and band raw values')
+#FNN_assess_p = subparsers.add_parser('FNN-assess', help='compare ML vs DNB values') # may become train only) 
+#FNN_assess_p.set_defaults(func=FNN_assess.assessment)
+#FNN_assess_p.add_argument('npz_path', help='Path to npz file with normed values') #DNB and band raw values')
 #FNN_assess_p.add_argument('norm_path', help='Path to npz file with normed values')
-FNN_assess_p.add_argument('ML_path', help='Path to ML data')
-FNN_assess_p.add_argument('-q', '--quiet', action='count', default=0)   
+#FNN_assess_p.add_argument('ML_path', help='Path to ML data')
+#FNN_assess_p.add_argument('-q', '--quiet', action='count', default=0)   
 #removecloud_p = subparsers.add_parser('cloud', help='trying to remove clear')
 #removecloud_p.set_defaults(func=removecloud.remove_cloud)
 #removecloud_p.add_argument('npz_path', help='Path to npz file')
